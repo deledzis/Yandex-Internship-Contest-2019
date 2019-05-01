@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    private static ArrayList<Integer> numsOld;
     private static ArrayList<Integer> nums;
 
     private static boolean isEven(int a) { return a % 2 == 0; }
@@ -16,7 +17,20 @@ public class Main {
         nums.set(i1, nums.get(i2));
         nums.set(i2, a);
     }
+    private static void printList() {
+        for (int i : nums) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+    }
+    private static int calculatePermitations() {
+        int diffs = 0;
+        for (int i = 0; i < numsOld.size(); i++) {
+            if (!nums.get(i).equals(numsOld.get(i))) diffs++;
+        }
 
+        return diffs;
+    }
 
     public static void main(String[] args) {
         try {
@@ -26,33 +40,39 @@ public class Main {
             int permutations = 0;
             for (int i = 0; i < n ; i++) {
                 nums.add(scanner.nextInt());
-                System.out.print(nums.get(i) + " ");
             }
+            numsOld = new ArrayList<>(nums);
             for (int i = 1; i < n; i++) {
                 int cur = nums.get(i);
                 if (sameParity(nums.get(i), nums.get(i - 1))) {
                     int j = i + 1;
                     if (j == n) {
+                        if (!sameParity(cur, nums.get(0))) {
+                            nums.add(0, nums.get(i));
+                            nums.remove(nums.size() - 1);
+                            break;
+                        }
                         permutations = -1;
                         break;
                     }
+                    boolean canBeSwapped = true;
                     while (sameParity(cur, nums.get(j))) {
                         j++;
                         if (j == n) {
                             permutations = -1;
+                            canBeSwapped = false;
                             break;
                         }
                     }
+                    if (!canBeSwapped) break;
                     swapElements(i, j);
-                    permutations++;
                 }
             }
-            System.out.println(permutations);
             if (permutations > -1) {
-                for (int i : nums) {
-                    System.out.print(i + " ");
-                }
-            }
+                permutations = calculatePermitations();
+                System.out.println(permutations);
+                printList();
+            } else System.out.println(-1);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
