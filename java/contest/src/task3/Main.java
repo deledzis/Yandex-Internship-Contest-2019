@@ -36,11 +36,13 @@ public class Main {
         try {
             Scanner scanner = new Scanner(new File("input3.txt"));
             int n = scanner.nextInt();
+            System.out.println(n);
             nums = new ArrayList<>(n);
             int permutations = 0;
-            for (int i = 0; i < n ; i++) {
+            for (int i = 0; i < n; i++) {
                 nums.add(scanner.nextInt());
             }
+            printList();
             numsOld = new ArrayList<>(nums);
             for (int i = 1; i < n; i++) {
                 int cur = nums.get(i);
@@ -72,7 +74,9 @@ public class Main {
                 permutations = calculatePermitations();
                 System.out.println(permutations);
                 printList();
-            } else System.out.println(-1);
+            } else {
+                System.out.println(-1);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
